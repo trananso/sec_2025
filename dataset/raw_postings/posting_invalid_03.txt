@@ -1,0 +1,22 @@
+We're hiring a Full Stack Developer!
+
+Join our dynamic startup in downtown Toronto. We're building the next generation of web applications and need someone who can work across the entire stack.
+
+What you'll do:
+- Build responsive web applications using React and Node.js
+- Design and implement RESTful APIs
+- Work with databases (PostgreSQL, MongoDB)
+- Collaborate with designers and product managers
+- Deploy applications to cloud infrastructure
+
+What we're looking for:
+- 3+ years of experience in web development
+- Strong knowledge of JavaScript, HTML, and CSS
+- Experience with modern frameworks and tools
+- Ability to work in a fast-paced environment
+- Must have Canadian work experience
+
+We offer competitive compensation, equity options, and a great team culture. Our hiring process uses advanced AI screening to help us find the best candidates quickly.
+
+Send your resume to jobs@startup.com. We're looking to fill this position ASAP!
+

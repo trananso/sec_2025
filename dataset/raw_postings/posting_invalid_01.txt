@@ -1,0 +1,51 @@
+Job Title: Software Developer
+Company: VelocityTech Solutions
+Location: Toronto, ON (Hybrid: Flexible schedule)
+Employment Type: Full-time, Permanent
+
+Overview:
+VelocityTech Solutions is a fast-growing technology company looking for a talented Software Developer to join our dynamic team. We work with cutting-edge technologies and the latest frameworks to deliver innovative solutions for our clients. This is an exciting opportunity to work on challenging projects and grow your career in a fast-paced environment.
+
+Key Responsibilities:
+- Develop and maintain web applications using modern JavaScript frameworks
+- Write clean, efficient, and well-documented code
+- Collaborate with cross-functional teams including designers, product managers, and other developers
+- Participate in code reviews and contribute to technical discussions
+- Debug and troubleshoot issues in production environments
+- Stay current with emerging technologies and industry best practices
+- Work on multiple projects simultaneously and meet tight deadlines
+
+Requirements (Must-Have):
+- Bachelor's degree in Computer Science, Software Engineering, or related field
+- 2-4 years of professional software development experience
+- Strong proficiency in JavaScript, HTML, and CSS
+- Experience with at least one modern framework (React, Vue, or Angular)
+- Knowledge of version control systems (Git)
+- Strong problem-solving abilities and attention to detail
+- Ability to work independently and as part of a team
+- Excellent communication skills
+
+Nice-to-Have:
+- Experience with Node.js and backend development
+- Familiarity with cloud platforms (AWS, Azure, or GCP)
+- Understanding of database design and SQL
+- Experience with Agile/Scrum methodologies
+- Knowledge of testing frameworks (Jest, Mocha, etc.)
+
+Work Environment:
+- Flexible work hours with option for remote work
+- Collaborative team environment
+- Opportunities for professional growth and learning
+- Fast-paced startup culture with exciting challenges
+
+Benefits:
+- Competitive compensation package
+- Health and dental benefits after probation period
+- Flexible vacation policy
+- Professional development opportunities
+- Stock options available for high performers
+
+Application Process:
+We are actively seeking candidates for this position. Please submit your resume and a brief cover letter outlining your relevant experience. Selected candidates will be contacted for an initial phone screening, followed by technical interviews.
+
+Our hiring process is designed to identify the best talent efficiently. We review applications on a rolling basis and encourage early submissions.

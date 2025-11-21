@@ -1,0 +1,36 @@
+Job Title: Senior Data Analyst
+Company: DataFlow Analytics Inc.
+Location: Ottawa, ON (Remote)
+Employment Type: Full-time, Permanent
+
+Overview:
+DataFlow Analytics is seeking an experienced Senior Data Analyst to join our growing team. You will work with large datasets, create insightful visualizations, and help drive data-driven decision making across the organization.
+
+Key Responsibilities:
+- Analyze complex datasets using SQL, Python, and R
+- Create dashboards and reports for stakeholders
+- Develop predictive models and statistical analyses
+- Present findings to executive leadership
+- Mentor junior analysts
+
+Requirements (Must-Have):
+- Minimum 5 years of Canadian work experience in data analysis
+- Bachelor's degree in Statistics, Mathematics, or related field
+- Proficiency in SQL, Python, and data visualization tools
+- Strong communication and presentation skills
+- Experience with cloud platforms (AWS, Azure, or GCP)
+
+Nice-to-Have:
+- Master's degree in a quantitative field
+- Experience with machine learning frameworks
+- Previous experience in the financial services industry
+
+Benefits:
+- Comprehensive health and dental benefits
+- 4 weeks paid vacation
+- Professional development budget
+- Flexible work arrangements
+
+Application Process:
+Please submit your resume and cover letter through our online portal. Selected candidates will be contacted for interviews.
+

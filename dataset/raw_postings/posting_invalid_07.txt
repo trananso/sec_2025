@@ -1,0 +1,33 @@
+Software Engineer - Backend Development
+
+TechCorp Solutions | Toronto, ON | Full-time
+
+We're looking for a talented Software Engineer to join our backend team. You'll work on scalable systems, microservices architecture, and cloud infrastructure.
+
+Responsibilities:
+- Design and develop backend services using Java and Spring Boot
+- Build and maintain RESTful APIs
+- Work with databases (PostgreSQL, Redis)
+- Implement caching and performance optimization strategies
+- Write unit and integration tests
+- Participate in code reviews and technical discussions
+
+Qualifications:
+- Bachelor's degree in Computer Science or equivalent
+- 4+ years of backend development experience
+- Strong knowledge of Java, Spring Framework, and SQL
+- Experience with cloud platforms (AWS preferred)
+- Understanding of distributed systems and microservices
+- Canadian work experience is required
+
+Salary: Competitive, commensurate with experience
+
+Benefits:
+- Health, dental, and vision insurance
+- Stock options
+- Flexible PTO
+- Learning and development budget
+- Gym membership
+
+We use AI-assisted tools in our recruitment process to help identify the best candidates. Apply through our careers page.
+
