@@ -4,6 +4,7 @@
     "client": "npx vite src"
   },
   "dependencies": {
+    "@shoelace-style/shoelace": "^2.20.1",
     "lit": "^3.3.1",
     "vite": "^7.2.4"
   }
