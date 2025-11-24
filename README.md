@@ -156,3 +156,8 @@ Logic for error handling and formatting was modified manually by the team.
 - Feature extraction logic initially generated using Copilot
 - Team modified output formatting, error handling, and validity checks
 
+### Instructions
+```
+npm install
+npm run client
+```
