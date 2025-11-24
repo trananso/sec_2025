@@ -1,3 +1,11 @@
+/**
+ * This component was generated with assistance from Copilot (Nov 2025 Version)
+ * Prompt: create a page thats centered with a h1 at the top, large text area for
+ *         employers and job seekers to enter a job posting, and then different
+ *         alerts that popup
+ * Modifications: analyzeJobPosting, runAnalysis was added
+ */
+
 import { LitElement, html, css } from "lit";
 import "@shoelace-style/shoelace/dist/components/button/button.js";
 import "@shoelace-style/shoelace/dist/components/textarea/textarea.js";
@@ -56,10 +64,35 @@ export default class JobPostingPage extends LitElement {
   }
 
   analyzeJobPosting(text) {
+    data = {
+      salaryRange: {
+        min: 50000,
+        max: 60000
+      },
+      salaryRangeExceeded: true,
+      aiDisclosureIncluded: true,
+      canadianExperienceNotRequired: false,
+      vacancyDisclosure: true,
+      aiUseProbability: {
+        probability: 0.85,
+        tool: "ChatGPT",
+      }
+    }
     return [
-      { id: "length", message: "Job posting is very short.", active: text.length < 50 },
-      { id: "missingSalary", message: "No salary information provided.", active: !text.includes("$") },
-      { id: "missingLocation", message: "No location specified.", active: !text.toLowerCase().includes("location") },
+      { id: "salaryRangeExceeded",
+        message: "Salary range exceeded and must not exceed $50,000 CAD",
+        active: data.salaryRangeExceeded
+      },
+      { id: "aiUseProbability",
+        message: `${data.aiUseProbability.tool} was likely used in the creation of this job posting with likelihood of ${data.aiUseProbability.probability}`,
+        active: !data.aiDisclosureIncluded && data.aiUseProbability.probability > 0.50
+      },
+      { id: "aiDisclosureIncluded",
+        message: "AI hiring disclosure not included",
+        active: !data.aiDisclosureIncluded },
+      { id: "vacancyDisclosure",
+        message: "Job posting must disclose whether it is for an existing vacancy or not",
+        active: !data.vacancyDisclosure },
     ];
   }
 
@@ -68,7 +101,6 @@ export default class JobPostingPage extends LitElement {
     const text = textarea.value.trim();
 
     const results = this.analyzeJobPosting(text);
-    // Keep only active flags
     this.flags = results.filter(f => f.active);
   }
 
