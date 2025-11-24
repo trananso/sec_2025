@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 from parser import Parse
 
 app = Flask(__name__)
+CORS(app, resources={r"/": {"origins": ""}})
+
 
 job_parser = Parse(api_key=None)
 
