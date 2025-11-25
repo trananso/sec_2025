@@ -105,8 +105,8 @@ export default class JobPostingPage extends LitElement {
       return [
         {
           id: "salaryRangeExceeded",
-          message: "Salary range exceeded and must not exceed $50,000 CAD",
-          active: data.salaryRangeExceeded || (data.salaryRange && (data.salaryRange.max - data.salaryRange.min > 50000))
+          message: `Salary range must not exceed $50,000. It has been exceeded by ${data.salary.originalMax - data.salary.originalMin - 50000}`,
+          active: data.salary && data.salary.salaryExceeded
         },
         {
           id: "aiUseProbability",
@@ -116,7 +116,7 @@ export default class JobPostingPage extends LitElement {
         {
           id: "aiDisclosureIncluded",
           message: "AI hiring disclosure not included",
-          active: !data.aiDisclosureIncluded
+          active: !data.aiDisclosureDescription
         },
         {
           id: "vacancyDisclosure",
@@ -136,8 +136,8 @@ export default class JobPostingPage extends LitElement {
     const text = textarea.value.trim();
 
     let results;
-    results = await this.analyzeJobPosting(text);
-    //results = await this.allFailJobPosting(text);
+    //results = await this.analyzeJobPosting(text);
+    results = await this.allFailJobPosting(text);
     this.flags = results.filter(f => f.active);
   }
 
