@@ -43,8 +43,7 @@ def analyze(parsed_job_specs: list):
         else:
             original_min, original_max, yearly_min, yearly_max = salary[0], False, salary[1], False
 
-
-        if not original_max:
+        if original_max is not False:
             salary_exceeded = (yearly_max - yearly_min) > 50000
         else:
             salary_exceeded = (original_max - original_min) > 50000
@@ -115,6 +114,7 @@ class Parse:
         response = self.client.models.generate_content(
             model='gemini-2.5-flash',
             contents=self.prompt.replace("JOB_POSTING", job_desc))
+
         parsed_job_specs = self.parse_response(response.text)
         parsed_job_specs = self.convert_types(parsed_job_specs)
         return analyze(parsed_job_specs)
