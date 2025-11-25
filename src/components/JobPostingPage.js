@@ -63,44 +63,81 @@ export default class JobPostingPage extends LitElement {
     this.flags = [];
   }
 
-  analyzeJobPosting(text) {
-    data = {
-      salaryRange: {
-        min: 50000,
-        max: 60000
-      },
-      salaryRangeExceeded: true,
-      aiDisclosureIncluded: true,
-      canadianExperienceNotRequired: false,
-      vacancyDisclosure: true,
-      aiUseProbability: {
-        probability: 0.85,
-        tool: "ChatGPT",
-      }
-    }
+  // Fail all the test cases to showcase the alerts
+  async allFailJobPosting(text) {
     return [
-      { id: "salaryRangeExceeded",
+      {
+        id: "salaryRangeExceeded",
         message: "Salary range exceeded and must not exceed $50,000 CAD",
-        active: data.salaryRangeExceeded
+        active: true
       },
-      { id: "aiUseProbability",
-        message: `${data.aiUseProbability.tool} was likely used in the creation of this job posting with likelihood of ${data.aiUseProbability.probability}`,
-        active: !data.aiDisclosureIncluded && data.aiUseProbability.probability > 0.50
+      {
+        id: "aiUseProbability",
+        message: `ChatGPT was likely used in the creation of this job posting with likelihood of 65%`,
+        active: true
       },
-      { id: "aiDisclosureIncluded",
+      {
+        id: "aiDisclosureIncluded",
         message: "AI hiring disclosure not included",
-        active: !data.aiDisclosureIncluded },
-      { id: "vacancyDisclosure",
+        active: true
+      },
+      {
+        id: "vacancyDisclosure",
         message: "Job posting must disclose whether it is for an existing vacancy or not",
-        active: !data.vacancyDisclosure },
+        active: true
+      },
     ];
   }
 
-  runAnalysis() {
+  async analyzeJobPosting(text) {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+
+      if (!response.ok) throw new Error("Server error");
+
+      const data = await response.json();
+      console.log(data);
+
+      return [
+        {
+          id: "salaryRangeExceeded",
+          message: "Salary range exceeded and must not exceed $50,000 CAD",
+          active: data.salaryRangeExceeded || (data.salaryRange && (data.salaryRange.max - data.salaryRange.min > 50000))
+        },
+        {
+          id: "aiUseProbability",
+          message: `${data.aiUseProbability.tool} was likely used in the creation of this job posting with likelihood of ${data.aiUseProbability.probability}`,
+          active: !data.aiDisclosureIncluded && data.aiUseProbability.probability > 0.50
+        },
+        {
+          id: "aiDisclosureIncluded",
+          message: "AI hiring disclosure not included",
+          active: !data.aiDisclosureIncluded
+        },
+        {
+          id: "vacancyDisclosure",
+          message: "Job posting must disclose whether it is for an existing vacancy or not",
+          active: !data.vacancyDisclosure
+        },
+      ];
+
+    } catch (err) {
+      console.error("Error analyzing posting:", err);
+      return [];
+    }
+  }
+
+  async runAnalysis() {
     const textarea = this.shadowRoot.getElementById("jobInput");
     const text = textarea.value.trim();
 
-    const results = this.analyzeJobPosting(text);
+    let results;
+    results = await this.analyzeJobPosting(text);
+    //results = await this.allFailJobPosting(text);
     this.flags = results.filter(f => f.active);
   }
 
@@ -123,8 +160,8 @@ export default class JobPostingPage extends LitElement {
 
         <!-- Display alerts for active flags -->
         ${this.flags.map(
-          flag => html`<sl-alert variant="warning" open>${flag.message}</sl-alert>`
-        )}
+      flag => html`<sl-alert variant="warning" open>${flag.message}</sl-alert>`
+    )}
       </div>
     `;
   }
