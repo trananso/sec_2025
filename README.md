@@ -16,5 +16,6 @@ npm run client
 pip install google-genai flask flask-cors
 
 # Add API key to src/service/server.py
+# AIzaSyAMDXzkcBF_EV8W-JC8INVP_VENiIsuVKE
 python src/service/server.py
 ```
