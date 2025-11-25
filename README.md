@@ -12,4 +12,7 @@ Son
 ```
 npm install
 npm run client
+
+pip install google-genai flask flask-cors
+python src/service/server.py
 ```
