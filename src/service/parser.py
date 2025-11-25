@@ -12,9 +12,9 @@ def parse_salary(salary: str):
     salary = salary.replace("$", "")
     salary_time = "hourly" if "hourly" in salary else "yearly"
     salary = salary.replace(salary_time, "").strip()
-
-    if "–" in salary:  # it is a range
-        original_salary_min, original_salary_max = map(float, map(lambda x: x.replace(",", ""), salary.split("–")))
+    salary = salary.replace("–", "-")
+    if "-" in salary:  # it is a range
+        original_salary_min, original_salary_max = map(float, map(lambda x: x.replace(",", ""), salary.split("-")))
 
         if salary_time == "hourly":
             yearly_salary_min, yearly_salary_max = convert_hourly_to_yearly(
@@ -35,7 +35,6 @@ def analyze(parsed_job_specs: list):
     salary, AI_disclosure, AI_disclosure_description, not_require_canadian_experience, vacancy_disclosure, probability_of_AI = parsed_job_specs
 
     if salary is not False:
-        print([salary])
         salary = parse_salary(salary)
         salary_time = salary[0]
         salary = salary[1:]
@@ -136,57 +135,36 @@ class Parse:
 
 
 if __name__ == "__main__":
-    job_parser = Parse()
-    x = job_parser.run("""Job Title: Junior Software Developer
-Company: MapleTech Solutions
-Location: Toronto, ON (Hybrid: 3 days on-site, 2 days remote)
+    job_parser = Parse(api_key="AIzaSyA5a-Y5id0JIf9xLMpFiB1rWxcnT_xLKu0")
+    x = job_parser.run("""Job Title: Project Coordinator
+Company: BuildRight Construction Ltd.
+Location: Kitchener, ON
 Employment Type: Full-time, Permanent
-Compensation: $58,000–$65,000 annually, based on experience
+Compensation: $52,000 - $58,000 annually
 
 Overview:
-MapleTech Solutions is seeking a Junior Software Developer to join our internal tools team. You will work closely with senior developers to maintain and enhance applications used across the company. This is a great opportunity for recent graduates or early-career developers who want structured mentorship and exposure to a modern development stack.
+BuildRight Construction is seeking a Project Coordinator to support our construction projects. You will assist project managers with scheduling, documentation, and communication with clients and subcontractors.
 
 Key Responsibilities:
-- Implement features and bug fixes for internal web applications
-- Write unit and integration tests to maintain code quality
-- Participate in code reviews and daily stand-up meetings
-- Collaborate with designers and product owners to refine requirements
-- Document changes and follow our established development workflow
+- Maintain project schedules and timelines
+- Coordinate meetings and prepare meeting minutes
+- Track project expenses and budgets
+- Communicate with clients regarding project status
+- Manage project documentation and filing systems
 
-Requirements (Must-Have):
-- 0–2 years of professional experience or equivalent personal/academic projects
-- Proficiency in at least one programming language (Python, JavaScript, or Java)
-- Basic understanding of Git and version control workflows
-- Strong problem-solving skills and attention to detail
-- Ability to work in a team and communicate clearly
-
-Nice-to-Have:
-- Experience with web frameworks (e.g., Django, Flask, React, or Vue)
-- Familiarity with relational databases (e.g., PostgreSQL, MySQL)
-- Exposure to Agile or Scrum methodologies
-
-Work Hours:
-- Standard schedule: Monday to Friday, 9:00 AM–5:00 PM (flexible within core hours)
-- Occasional paid overtime may be requested during critical releases, with notice
+Requirements:
+- Post-secondary education in construction management or related field
+- 2-3 years of experience in construction or project coordination
+- Strong organizational and time management skills
+- Proficiency with Microsoft Office Suite
+- Excellent written and verbal communication skills
 
 Benefits:
-- Health, dental, and vision coverage after 3 months
-- 3 weeks paid vacation to start, plus sick days
-- Annual learning and training budget
-- RRSP matching program after 1 year
-- Access to employee wellness programs
-
-AI Use in Hiring:
-- We may use automated tools to assist in application screening (e.g., keyword matching).
-- All applications are reviewed by a human recruiter before shortlisting.
-- Automated tools do not make final hiring decisions.
-
-Existing Vacancy:
-- This posting is for an existing vacancy.
+- Health and dental benefits
+- 2 weeks paid vacation
+- Company vehicle for site visits
+- Safety training and certification support
 
 Application Process:
-Please submit your resume, a brief cover letter, and (optionally) a link to your GitHub or portfolio. Selected candidates will be invited to a two-step interview process, which includes a short technical exercise.
-
-Accommodation:
-MapleTech Solutions is committed to an inclusive and accessible recruitment process. If you require accommodation at any stage, please contact hr@mapletech.ca.""")
+Please submit your resume and cover letter. Qualified candidates will be contacted for interviews.""")
     print([x])
