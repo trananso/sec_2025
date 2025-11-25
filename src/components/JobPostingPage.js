@@ -68,7 +68,7 @@ export default class JobPostingPage extends LitElement {
     return [
       {
         id: "salaryRangeExceeded",
-        message: "Salary range exceeded and must not exceed $50,000 CAD",
+        message: "Salary range must not exceed $50,000. It has been exceeded by $3,000",
         active: true
       },
       {
@@ -86,6 +86,11 @@ export default class JobPostingPage extends LitElement {
         message: "Job posting must disclose whether it is for an existing vacancy or not",
         active: true
       },
+      {
+        id: "canadianExperienceNotRequired",
+        message: "Job posting cannot require candidate to have Canadian experience",
+        active: true
+      }
     ];
   }
 
@@ -105,13 +110,13 @@ export default class JobPostingPage extends LitElement {
       return [
         {
           id: "salaryRangeExceeded",
-          message: `Salary range must not exceed $50,000. It has been exceeded by ${data.salary.originalMax - data.salary.originalMin - 50000}`,
-          active: data.salary && data.salary.salaryExceeded
+          message: `Salary range must not exceed $50,000. It has been exceeded by ${data.salary?.originalMax - data.salary?.originalMin - 50000}`,
+          active: data.salary && data.salary?.salaryExceeded
         },
         {
           id: "aiUseProbability",
-          message: `${data.aiUseProbability.tool} was likely used in the creation of this job posting with likelihood of ${data.aiUseProbability.probability}`,
-          active: !data.aiDisclosureIncluded && data.aiUseProbability.probability > 0.50
+          message: `AI was likely used in the creation of this job posting with likelihood of ${data.aiUseProbability}`,
+          active: !data.aiDisclosure && data.aiUseProbability > 0.50
         },
         {
           id: "aiDisclosureIncluded",
@@ -123,11 +128,16 @@ export default class JobPostingPage extends LitElement {
           message: "Job posting must disclose whether it is for an existing vacancy or not",
           active: !data.vacancyDisclosure
         },
+        {
+          id: "canadianExperienceNotRequired",
+          message: "Job posting cannot require candidate to have Canadian experience",
+          active: !data.canadianExperienceNotRequired
+        }
       ];
 
     } catch (err) {
       console.error("Error analyzing posting:", err);
-      return [];
+      return this.allFailJobPosting(text)
     }
   }
 
@@ -136,8 +146,8 @@ export default class JobPostingPage extends LitElement {
     const text = textarea.value.trim();
 
     let results;
-    //results = await this.analyzeJobPosting(text);
-    results = await this.allFailJobPosting(text);
+    results = await this.analyzeJobPosting(text);
+    //results = await this.allFailJobPosting(text);
     this.flags = results.filter(f => f.active);
   }
 
