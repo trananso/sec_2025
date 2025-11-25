@@ -8,15 +8,13 @@ def convert_hourly_to_yearly(rate, hours_per_week=40, weeks_per_year=52):  # def
 
 
 def parse_salary(salary: str):
-    if salary == "None":
-        return None
     # convert to full time
     salary = salary.replace("$", "")
     salary_time = "hourly" if "hourly" in salary else "yearly"
     salary = salary.replace(salary_time, "").strip()
 
-    if "-" in salary:  # it is a range
-        original_salary_min, original_salary_max = map(float, salary.split("-"))
+    if "–" in salary:  # it is a range
+        original_salary_min, original_salary_max = map(float, map(lambda x: x.replace(",", ""), salary.split("–")))
 
         if salary_time == "hourly":
             yearly_salary_min, yearly_salary_max = convert_hourly_to_yearly(
@@ -25,8 +23,8 @@ def parse_salary(salary: str):
             yearly_salary_min, yearly_salary_max = original_salary_min, original_salary_max
         return [salary_time, original_salary_min, original_salary_max, yearly_salary_min, yearly_salary_max]
 
-    else:
-        original_salary = float(salary)
+    elif salary is not False:
+        original_salary = float(salary.replace(",", ""))
         if salary_time == "hourly":
             yearly_salary = convert_hourly_to_yearly(original_salary)
         else:
@@ -36,16 +34,17 @@ def parse_salary(salary: str):
 def analyze(parsed_job_specs: list):
     salary, AI_disclosure, AI_disclosure_description, not_require_canadian_experience, vacancy_disclosure, probability_of_AI = parsed_job_specs
 
-    if salary != "None":
+    if salary is not False:
+        print([salary])
         salary = parse_salary(salary)
         salary_time = salary[0]
         salary = salary[1:]
         if len(salary) == 4:  # if the salary is a range
             original_min, original_max, yearly_min, yearly_max = salary
         else:
-            original_min, original_max, yearly_min, yearly_max = salary[0], None, salary[1], None
+            original_min, original_max, yearly_min, yearly_max = salary[0], False, salary[1], False
 
-        if original_max is not None:
+        if not original_max:
             salary_exceeded = (yearly_max - yearly_min) > 50000
         else:
             salary_exceeded = False
@@ -84,17 +83,17 @@ class Parse:
         Instructions:
         Analyze the text and return ONLY a single Python list containing the following elements in this exact order. Do not wrap the output in markdown or code blocks. Just return the raw list string.
 
-        1. Salary String: Extract the exact salary or salary range or hourly rate mentioned. You MUST use [yearly, hourly] to denote the salary. If no salary is present, return "None".
+        1. Salary String: Extract the exact salary or salary range or hourly rate mentioned. You MUST use [yearly, hourly] to denote the salary. If no salary is present, return "False".
         2. AI Disclosure Found: Return "True" if the text explicitly mentions using Artificial Intelligence (AI) for screening, selection, or evaluation. Return "False" if not mentioned.
-        3. AI Conditions: If step 2 is True, quote the specific sentence describing how AI is used. If #2 is False, return "None".
+        3. AI Conditions: If step 2 is True, quote the specific sentence describing how AI is used. If #2 is False, return False.
         4. Does NOT Require Canadian Experience: Return "False" if the text explicitly requires "Canadian experience," "Canadian work experience," or "local experience." Return "True" if not.
-        5. Vacancy Status Disclosure: Return True or False indicating if this is an existing vacancy or a future pool (for example: "Active vacancy," "Talent pool", "Future opportunity"). If not specified, return "None".
+        5. Vacancy Status Disclosure: Return True indicating if this is an existing vacancy or a future pool (for example: "Active vacancy," "Talent pool", "Future opportunity"). If not or not specified, return "False".
         6. The probability that the job description was written by generative AI.
 
         Output Format Example:
         ["$20.00 hourly", False, "Humans are used to screen", "False", True, 0.3]
         ["$20.00-$25.00 hourly", False, "Humans are used to screen", "False", False, 0.2]
-        ["$50,000-$60,000 yearly", "True", "AI is used to screen resumes", "False", "None", 0.6]
+        ["$50,000-$60,000 yearly", "True", "AI is used to screen resumes", "False", "False", 0.6]
 
         Your Response:
         """
@@ -103,21 +102,21 @@ class Parse:
     def parse_response(self, response):
         return ast.literal_eval(response)
 
-    # def convert_types(self, parsed_job_specs):
-    #     for i in range(len(parsed_job_specs)):
-    #         print(parsed_job_specs[i])
-    #         if isinstance(parsed_job_specs, str) and parsed_job_specs[i].lower() == "none":
-    #             parsed_job_specs[i] = None
-    #     return parsed_job_specs
+    def convert_types(self, parsed_job_specs):
+        for i, val in enumerate(parsed_job_specs):
+            if isinstance(val, str):
+                if val.lower() == "false":
+                    parsed_job_specs[i] = False
+                elif val.lower() == "true":
+                    parsed_job_specs[i] = True
+        return parsed_job_specs
 
     def run(self, job_desc):
         response = self.client.models.generate_content(
             model='gemini-2.5-flash',
             contents=self.prompt.replace("JOB_POSTING", job_desc))
         parsed_job_specs = self.parse_response(response.text)
-        # parsed_job_specs = self.convert_types(parsed_job_specs)
-        # print([parsed_job_specs[0]])
-        # raise ValueError
+        parsed_job_specs = self.convert_types(parsed_job_specs)
         return analyze(parsed_job_specs)
 
 # format = {
@@ -137,58 +136,57 @@ class Parse:
 
 
 if __name__ == "__main__":
-    job_parser = Parse()
-    x = job_parser.run("""
-Job Title: Software Developer
-Company: VelocityTech Solutions
-Location: Toronto, ON (Hybrid: Flexible schedule)
+    job_parser = Parse(api_key="AIzaSyA5a-Y5id0JIf9xLMpFiB1rWxcnT_xLKu0")
+    x = job_parser.run("""Job Title: Junior Software Developer
+Company: MapleTech Solutions
+Location: Toronto, ON (Hybrid: 3 days on-site, 2 days remote)
 Employment Type: Full-time, Permanent
+Compensation: $58,000–$65,000 annually, based on experience
 
 Overview:
-VelocityTech Solutions is a fast-growing technology company looking for a talented Software Developer to join our dynamic team. We work with cutting-edge technologies and the latest frameworks to deliver innovative solutions for our clients. This is an exciting opportunity to work on challenging projects and grow your career in a fast-paced environment.
+MapleTech Solutions is seeking a Junior Software Developer to join our internal tools team. You will work closely with senior developers to maintain and enhance applications used across the company. This is a great opportunity for recent graduates or early-career developers who want structured mentorship and exposure to a modern development stack.
 
 Key Responsibilities:
-- Develop and maintain web applications using modern JavaScript frameworks
-- Write clean, efficient, and well-documented code
-- Collaborate with cross-functional teams including designers, product managers, and other developers
-- Participate in code reviews and contribute to technical discussions
-- Debug and troubleshoot issues in production environments
-- Stay current with emerging technologies and industry best practices
-- Work on multiple projects simultaneously and meet tight deadlines
+- Implement features and bug fixes for internal web applications
+- Write unit and integration tests to maintain code quality
+- Participate in code reviews and daily stand-up meetings
+- Collaborate with designers and product owners to refine requirements
+- Document changes and follow our established development workflow
 
 Requirements (Must-Have):
-- Bachelor's degree in Computer Science, Software Engineering, or related field
-- 2-4 years of professional software development experience
-- Strong proficiency in JavaScript, HTML, and CSS
-- Experience with at least one modern framework (React, Vue, or Angular)
-- Knowledge of version control systems (Git)
-- Strong problem-solving abilities and attention to detail
-- Ability to work independently and as part of a team
-- Excellent communication skills
+- 0–2 years of professional experience or equivalent personal/academic projects
+- Proficiency in at least one programming language (Python, JavaScript, or Java)
+- Basic understanding of Git and version control workflows
+- Strong problem-solving skills and attention to detail
+- Ability to work in a team and communicate clearly
 
 Nice-to-Have:
-- Experience with Node.js and backend development
-- Familiarity with cloud platforms (AWS, Azure, or GCP)
-- Understanding of database design and SQL
-- Experience with Agile/Scrum methodologies
-- Knowledge of testing frameworks (Jest, Mocha, etc.)
+- Experience with web frameworks (e.g., Django, Flask, React, or Vue)
+- Familiarity with relational databases (e.g., PostgreSQL, MySQL)
+- Exposure to Agile or Scrum methodologies
 
-Work Environment:
-- Flexible work hours with option for remote work
-- Collaborative team environment
-- Opportunities for professional growth and learning
-- Fast-paced startup culture with exciting challenges
+Work Hours:
+- Standard schedule: Monday to Friday, 9:00 AM–5:00 PM (flexible within core hours)
+- Occasional paid overtime may be requested during critical releases, with notice
 
 Benefits:
-- Competitive compensation package
-- Health and dental benefits after probation period
-- Flexible vacation policy
-- Professional development opportunities
-- Stock options available for high performers
+- Health, dental, and vision coverage after 3 months
+- 3 weeks paid vacation to start, plus sick days
+- Annual learning and training budget
+- RRSP matching program after 1 year
+- Access to employee wellness programs
+
+AI Use in Hiring:
+- We may use automated tools to assist in application screening (e.g., keyword matching).
+- All applications are reviewed by a human recruiter before shortlisting.
+- Automated tools do not make final hiring decisions.
+
+Existing Vacancy:
+- This posting is for an existing vacancy.
 
 Application Process:
-We are actively seeking candidates for this position. Please submit your resume and a brief cover letter outlining your relevant experience. Selected candidates will be contacted for an initial phone screening, followed by technical interviews.
+Please submit your resume, a brief cover letter, and (optionally) a link to your GitHub or portfolio. Selected candidates will be invited to a two-step interview process, which includes a short technical exercise.
 
-Our hiring process is designed to identify the best talent efficiently. We review applications on a rolling basis and encourage early submissions.
-""")
+Accommodation:
+MapleTech Solutions is committed to an inclusive and accessible recruitment process. If you require accommodation at any stage, please contact hr@mapletech.ca.""")
     print([x])
