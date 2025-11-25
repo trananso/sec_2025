@@ -20,7 +20,7 @@ def analyze_job_desc():
     try:
         parsed_job = job_parser.run(job_text)
     except:
-        return jsonify({"GeminiError": "Gemini Gave Up"}), 400
+        return jsonify({"GeminiError": "Gemini Gave Up"}), 401
     return jsonify(parsed_job)
 
 
