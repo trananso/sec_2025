@@ -136,7 +136,7 @@ class Parse:
 
 
 if __name__ == "__main__":
-    job_parser = Parse(api_key="AIzaSyA5a-Y5id0JIf9xLMpFiB1rWxcnT_xLKu0")
+    job_parser = Parse()
     x = job_parser.run("""Job Title: Junior Software Developer
 Company: MapleTech Solutions
 Location: Toronto, ON (Hybrid: 3 days on-site, 2 days remote)
