@@ -43,10 +43,11 @@ def analyze(parsed_job_specs: list):
         else:
             original_min, original_max, yearly_min, yearly_max = salary[0], False, salary[1], False
 
+
         if not original_max:
             salary_exceeded = (yearly_max - yearly_min) > 50000
         else:
-            salary_exceeded = False
+            salary_exceeded = (original_max - original_min) > 50000
         response = {
             "salary": {
                 "salaryExceeded": salary_exceeded,
@@ -135,36 +136,34 @@ class Parse:
 
 
 if __name__ == "__main__":
-    job_parser = Parse(api_key="AIzaSyA5a-Y5id0JIf9xLMpFiB1rWxcnT_xLKu0")
-    x = job_parser.run("""Job Title: Project Coordinator
-Company: BuildRight Construction Ltd.
-Location: Kitchener, ON
-Employment Type: Full-time, Permanent
-Compensation: $52,000 - $58,000 annually
+    job_parser = Parse(api_key="")
+    x = job_parser.run("""Accountant Position Available
 
-Overview:
-BuildRight Construction is seeking a Project Coordinator to support our construction projects. You will assist project managers with scheduling, documentation, and communication with clients and subcontractors.
+Midtown Accounting Firm is seeking an experienced Accountant to join our team. This position offers excellent growth opportunities and a supportive work environment.
 
-Key Responsibilities:
-- Maintain project schedules and timelines
-- Coordinate meetings and prepare meeting minutes
-- Track project expenses and budgets
-- Communicate with clients regarding project status
-- Manage project documentation and filing systems
+Job Duties:
+- Prepare financial statements and reports
+- Handle tax preparation for individuals and small businesses
+- Maintain general ledger and reconcile accounts
+- Assist with audits and compliance
+- Provide financial advice to clients
 
 Requirements:
-- Post-secondary education in construction management or related field
-- 2-3 years of experience in construction or project coordination
-- Strong organizational and time management skills
-- Proficiency with Microsoft Office Suite
-- Excellent written and verbal communication skills
+- CPA designation or in progress
+- Minimum 3 years of accounting experience in Canada
+- Proficiency with accounting software (QuickBooks, Sage)
+- Strong attention to detail
+- Excellent organizational skills
+
+Compensation: $55,000 - $110,000 per year
 
 Benefits:
-- Health and dental benefits
-- 2 weeks paid vacation
-- Company vehicle for site visits
-- Safety training and certification support
+- Health insurance
+- 3 weeks vacation
+- Professional development support
+- Flexible work arrangements
 
-Application Process:
-Please submit your resume and cover letter. Qualified candidates will be contacted for interviews.""")
+Please send your resume and cover letter to careers@midtownaccounting.ca. We review applications on a rolling basis.
+
+""")
     print([x])
