@@ -3,10 +3,10 @@
 WeFumbleThese
 
 ### Competitor's Names
-Anson Tran
-Brian Wu
-Dinh Nguyen Tien Hung
-Son
+* Anson Tran
+* Brian Wu
+* Dinh Nguyen Tien Hung
+* Son
 
 ### Instructions
 ```
