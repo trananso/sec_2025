@@ -136,7 +136,7 @@ class Parse:
 
 
 if __name__ == "__main__":
-    job_parser = Parse(api_key="AIzaSyA5a-Y5id0JIf9xLMpFiB1rWxcnT_xLKu0")
+    job_parser = Parse()
     x = job_parser.run("""Job Title: Senior Data Analyst
 Company: DataFlow Analytics Inc.
 Location: Ottawa, ON (Remote)
